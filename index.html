@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechNexus Ultimate | មជ្ឈមណ្ឌលបច្ចេកវិទ្យា និងគ្រឿងបន្លាស់កុំព្យូទ័រ</title>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&family=Moul&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS VARIABLES & THEMES --- */
+        :root {
+            --primary: #2563eb;
+            --primary-glow: rgba(37, 99, 235, 0.2);
+            --secondary: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --bg-nav: rgba(255, 255, 255, 0.8);
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --radius: 16px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #020617;
+            --bg-card: #1e293b;
+            --bg-nav: rgba(15, 23, 42, 0.8);
+            --text-main: #f1f5f9;
+            --text-muted: #94a3b8;
+            --border: #334155;
+            --primary: #60a5fa;
+            --shadow-md: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+        }
+
+        /* --- GLOBAL RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Kantumruy Pro', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.8;
+            transition: background-color 0.5s, color 0.5s;
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- REUSABLE COMPONENTS --- */
+        .container { width: 90%; max-width: 1400px; margin: 0 auto; }
+        
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 12px 28px; border-radius: 12px; font-weight: 600;
+            cursor: pointer; border: 2px solid transparent; gap: 8px;
+            font-family: inherit; transition: var(--transition);
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px var(--primary-glow); }
+        
+        .btn-outline { border-color: var(--primary); color: var(--primary); background: transparent; }
+        .btn-outline:hover { background: var(--primary); color: white; }
+
+        .section-padding { padding: 100px 0; }
+        
+        .section-header { margin-bottom: 60px; border-left: 6px solid var(--primary); padding-left: 20px; }
+        .section-header h2 { font-family: 'Moul', serif; font-size: 2rem; margin-bottom: 10px; }
+        .section-header p { color: var(--text-muted); font-size: 1.1rem; }
+
+        /* --- NAVIGATION --- */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: var(--bg-nav); backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+        }
+        .nav-wrapper {
+            display: flex; justify-content: space-between; align-items: center;
+            height: 85px; padding: 0 5%;
+        }
+        .logo { font-family: 'Moul', serif; font-size: 1.6rem; color: var(--primary); letter-spacing: 1px; }
+
+        .nav-links { display: flex; gap: 35px; }
+        .nav-links a { font-weight: 600; font-size: 0.95rem; position: relative; }
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 3px; 
+            bottom: -8px; left: 0; background: var(--primary); transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-actions { display: flex; align-items: center; gap: 20px; }
+        
+        .theme-switch {
+            width: 45px; height: 45px; border-radius: 50%; border: 1px solid var(--border);
+            background: var(--bg-card); cursor: pointer; display: flex;
+            align-items: center; justify-content: center; font-size: 1.2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 220px 0 120px;
+            background: radial-gradient(circle at top right, var(--primary-glow), transparent 45%);
+            text-align: center; overflow: hidden;
+        }
+        .hero-badge {
+            background: var(--primary-glow); color: var(--primary);
+            padding: 8px 20px; border-radius: 50px; font-weight: 700;
+            font-size: 0.9rem; display: inline-block; margin-bottom: 25px;
+        }
+        .hero h1 {
+            font-family: 'Moul', serif; font-size: 4rem; line-height: 1.3;
+            margin-bottom: 30px; letter-spacing: -1px;
+        }
+        .hero h1 span { color: var(--primary); }
+        .hero p {
+            max-width: 800px; margin: 0 auto 45px; font-size: 1.25rem;
+            color: var(--text-muted); line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px; margin-top: 80px; max-width: 1000px; margin-left: auto; margin-right: auto;
+        }
+        .stat-card { background: var(--bg-card); padding: 30px; border-radius: var(--radius); border: 1px solid var(--border); }
+        .stat-card h3 { font-size: 2.2rem; color: var(--primary); margin-bottom: 5px; }
+
+        /* --- PRODUCT GRID --- */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 35px; }
+        
+        .product-card {
+            background: var(--bg-card); border-radius: 28px; padding: 25px;
+            border: 1px solid var(--border); position: relative; transition: var(--transition);
+        }
+        .product-card:hover { transform: translateY(-15px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+        
+        .product-tag {
+            position: absolute; top: 20px; right: 20px; z-index: 10;
+            background: var(--secondary); color: white; padding: 6px 16px;
+            border-radius: 50px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
+        }
+
+        .product-image {
+            width: 100%; height: 260px; background: #f1f5f9; border-radius: 20px;
+            margin-bottom: 25px; display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        [data-theme="dark"] .product-image { background: #0f172a; }
+
+        .product-info h3 { font-size: 1.5rem; margin-bottom: 12px; }
+        .product-info p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 25px; min-height: 50px; }
+
+        .product-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: 20px; }
+        .product-price { font-size: 1.6rem; font-weight: 800; color: var(--primary); }
+
+        /* --- FEATURE BLOCKS (Long Content) --- */
+        .content-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .content-text h2 { font-family: 'Moul', serif; font-size: 2.5rem; margin-bottom: 25px; line-height: 1.4; }
+        .content-text p { font-size: 1.15rem; margin-bottom: 25px; color: var(--text-muted); }
+        
+        .feature-list li {
+            margin-bottom: 18px; display: flex; gap: 15px; align-items: flex-start;
+            font-weight: 500; font-size: 1.05rem;
+        }
+        .feature-list span {
+            background: var(--primary); color: white; width: 28px; height: 28px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-size: 0.8rem;
+        }
+
+        /* --- SERVICE CARDS --- */
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; }
+        .service-card {
+            background: var(--bg-card); padding: 45px; border-radius: 30px;
+            border: 1px solid var(--border); text-align: left;
+        }
+        .service-icon { 
+            width: 70px; height: 70px; background: var(--primary-glow); 
+            border-radius: 20px; margin-bottom: 30px; display: flex;
+            align-items: center; justify-content: center; font-size: 2rem; color: var(--primary);
+        }
+
+        /* --- TECH BLOG SECTION --- */
+        .blog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; }
+        .blog-card { background: var(--bg-card); border-radius: 25px; overflow: hidden; border: 1px solid var(--border); }
+        .blog-thumb { height: 250px; background: #e2e8f0; }
+        .blog-body { padding: 35px; }
+        .blog-date { color: var(--primary); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .blog-body h3 { font-size: 1.4rem; margin-bottom: 15px; }
+
+        /* --- FAQ SECTION --- */
+        .faq-wrapper { max-width: 900px; margin: 0 auto; }
+        .faq-item {
+            background: var(--bg-card); border: 1px solid var(--border);
+            margin-bottom: 20px; border-radius: 20px; overflow: hidden;
+        }
+        .faq-question {
+            padding: 25px 35px; cursor: pointer; display: flex; justify-content: space-between;
+            align-items: center; font-weight: 700; font-size: 1.1rem;
+        }
+        .faq-answer {
+            padding: 0 35px 30px; display: none; color: var(--text-muted);
+            border-top: 1px solid transparent;
+        }
+        .faq-item.active .faq-answer { display: block; border-top-color: var(--border); }
+        .faq-item.active .faq-question { color: var(--primary); }
+
+        /* --- FOOTER --- */
+        footer { background: #0f172a; color: #94a3b8; padding: 100px 0 40px; border-top: 5px solid var(--primary); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 80px; }
+        
+        .footer-about h2 { font-family: 'Moul', serif; color: white; font-size: 1.8rem; margin-bottom: 25px; }
+        .footer-about p { line-height: 1.8; margin-bottom: 30px; font-size: 1rem; }
+        
+        .footer-nav h4 { color: white; font-family: 'Moul', serif; margin-bottom: 30px; font-size: 1.1rem; }
+        .footer-nav ul li { margin-bottom: 15px; }
+        .footer-nav a:hover { color: white; padding-left: 8px; }
+
+        .footer-bottom { 
+            border-top: 1px solid #1e293b; padding-top: 40px; text-align: center;
+            font-size: 0.9rem; letter-spacing: 1px;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1100px) {
+            .hero h1 { font-size: 3rem; }
+            .content-grid { grid-template-columns: 1fr; gap: 50px; }
+            .nav-links { display: none; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .service-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="nav">
+        <div class="nav-wrapper">
+            <a href="#" class="logo">TECHNEXUS</a>
+            <nav class="nav-links">
+                <a href="#home">ទំព័រដើម</a>
+                <a href="#products">ផលិតផល</a>
+                <a href="#services">សេវាកម្ម</a>
+                <a href="#blog">ប្លុកបច្ចេកវិទ្យា</a>
+                <a href="#faq">សំណួរចម្លើយ</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="theme-switch" id="theme-toggle" aria-label="Toggle Theme">🌙</button>
+                <a href="#contact" class="btn btn-primary">ទំនាក់ទំនង</a>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="container">
+            <span class="hero-badge">NEW ARRIVAL 2026</span>
+            <h1>ផ្លាស់ប្តូរបទពិសោធន៍ <span>បច្ចេកវិទ្យា</span> <br>ឱ្យកាន់តែអស្ចារ្យ</h1>
+            <p>យើងផ្តល់ជូននូវគ្រឿងបន្លាស់កុំព្យូទ័រលំដាប់ Premium និងសេវាកម្មដំឡើង PC តាមតម្រូវការជាក់ស្តែងរបស់អ្នក ជាមួយការធានាគុណភាពខ្ពស់បំផុតនៅកម្ពុជា។</p>
+            
+            <div style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <a href="#products" class="btn btn-primary" style="padding: 18px 50px; font-size: 1.1rem;">ទិញឥឡូវនេះ</a>
+                <a href="#services" class="btn btn-outline" style="padding: 18px 50px; font-size: 1.1rem;">សេវាកម្មរបស់យើង</a>
+            </div>
+
+            <div class="hero-stats">
+                <div class="stat-card">
+                    <h3>20k+</h3>
+                    <p>អតិថិជនជឿជាក់</p>
+                </div>
+                <div class="stat-card">
+                    <h3>99%</h3>
+                    <p>ការពេញចិត្ត</p>
+                </div>
+                <div class="stat-card">
+                    <h3>50+</h3>
+                    <p>ម៉ាកល្បីៗ</p>
+                </div>
+                <div class="stat-card">
+                    <h3>24/7</h3>
+                    <p>ការគាំទ្របច្ចេកទេស</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="products">
+        <div class="container">
+            <div class="section-header">
+                <h2>ផលិតផលពេញនិយមបំផុត</h2>
+                <p>ស្វែងរកគ្រឿងបន្លាស់ជំនាន់ចុងក្រោយ ដែលកំពុងទទួលបានការគាំទ្រខ្លាំង</p>
+            </div>
+
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-tag">HOT DEAL</div>
+                    <div class="product-image">
+                        <img src="https://i.pinimg.com/736x/f8/56/70/f856705e8d8b974d791a46d696c837e5.jpg">
+                        <span style="font-size: 5rem;"></span>
+                    </div>
+                    <div class="product-info">
+                        
+                        <h3>RTX 5090 Founders Edition</h3>
+                        <p>បទពិសោធន៍ក្រាហ្វិកកម្រិតកំពូល ជាមួយបច្ចេកវិទ្យា AI ជំនាន់ទី ៥ សម្រាប់ Gamer និង Creator អាជីព។</p>
+                        <div class="product-footer">
+                            <span class="product-price">$2,499.00</span>
+                            <button class="btn btn-primary" style="padding: 10px 20px;">កុម្ម៉ង់</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://i.pinimg.com/736x/9e/0a/29/9e0a29f2edc38a84c2e5833e4466af27.jpg">
+                        <span style="font-size: 5rem;"></span>
+                    </div>
+                    <div class="product-info">
+                        <h3>Intel Core i9-16900K</h3>
+                        <p>Processor ខ្លាំងបំផុតសម្រាប់ការងារ Render វីដេអូកម្រិត 8K និងការលេងហ្គេមដែលត្រូវការល្បឿនលឿន។</p>
+                        <div class="product-footer">
+                            <span class="product-price">$689.00</span>
+                            <button class="btn btn-primary" style="padding: 10px 20px;">កុម្ម៉ង់</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-tag">NEW</div>
+                    <div class="product-image">
+                        <span style="font-size: 5rem;">📺</span>
+                    </div>
+                    <div class="product-info">
+                        <h3>ROG Swift OLED 4K 240Hz</h3>
+                        <p>អេក្រង់ OLED កម្រិតច្បាស់បំផុត ផ្ដល់នូវពណ៌ធម្មជាតិពិតៗ និងល្បឿនតបស្នងត្រឹម 0.03ms។</p>
+                        <div class="product-footer">
+                            <span class="product-price">$1,350.00</span>
+                            <button class="btn btn-primary" style="padding: 10px 20px;">កុម្ម៉ង់</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" style="background: var(--bg-card); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+        <div class="container">
+            <div class="content-grid">
+                <div class="content-image">
+                    <div style="width: 100%; height: 550px; background: var(--bg-body); border-radius: 40px; display: flex; align-items: center; justify-content: center; font-size: 8rem; border: 1px solid var(--border);">
+                        🖥️
+                    </div>
+                </div>
+                <div class="content-text">
+                    <h2>សិល្បៈនៃការដំឡើង <br>Custom PC ឱ្យមានលក្ខណៈពិសេស</h2>
+                    <p>ការមានគ្រឿងបន្លាស់ខ្លាំងៗតែមួយមុខមិនទាន់គ្រប់គ្រាន់ទេ! ការរៀបចំឱ្យគ្រឿងបន្លាស់នីមួយៗដំណើរការស៊ីគ្នា ១០០% គឺជាអ្វីដែល TechNexus ជំនាញបំផុត។ យើងផ្តល់សេវាកម្មដំឡើង PC ដែលផ្ដោតលើ៖</p>
+                    
+                    <ul class="feature-list">
+                        <li><span>1</span> <strong>ការរៀបចំខ្សែភ្លើង (Pro Cable Management):</strong> ដើម្បីលំហូរខ្យល់ល្អ និងសោភ័ណភាព។</li>
+                        <li><span>2</span> <strong>ការធ្វើតេស្តសីតុណ្ហភាព (Thermal Testing):</strong> ធានាថាម៉ាស៊ីនត្រជាក់ជានិច្ច ទោះបីជាប្រើការងារធ្ងន់។</li>
+                        <li><span>3</span> <strong>ការកំណត់ BIOS (Expert Tuning):</strong> ដំឡើងដើម្បីទាញយកសមត្ថភាពអតិបរមាពីគ្រឿងនីមួយៗ។</li>
+                        <li><span>4</span> <strong>សោភ័ណភាព RGB:</strong> កំណត់ពន្លឺឱ្យស្របតាមស្ទីលដែលអ្នកចង់បាន។</li>
+                    </ul>
+                    
+                    <div style="margin-top: 40px;">
+                        <a href="#" class="btn btn-primary">ប្រឹក្សាយោបល់ឥតគិតថ្លៃ</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="services">
+        <div class="container">
+            <div class="section-header" style="text-align: center; border: none; padding: 0;">
+                <h2>សេវាកម្មរបស់យើង</h2>
+                <p>យើងផ្តល់ជូនលើសពីការលក់ គឺការថែទាំ និងការគាំទ្របច្ចេកទេសពេញលេញ</p>
+            </div>
+
+            <div class="service-grid">
+                <div class="service-card">
+                    <div class="service-icon">🛠️</div>
+                    <h3>ជួសជុល និងសេវាកម្មដំឡើង</h3>
+                    <p>សេវាកម្មជួសជុល Laptop និង Desktop គ្រប់ប្រភេទ ដោយអ្នកបច្ចេកទេសដែលមានបទពិសោធន៍យូរឆ្នាំ និងប្រើប្រាស់គ្រឿងបន្លាស់សុទ្ធ។</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🌐</div>
+                    <h3>តម្លើងប្រព័ន្ធ Network</h3>
+                    <p>ផ្តល់ដំណោះស្រាយប្រព័ន្ធអ៊ីនធឺណិត និងបណ្តាញ Network សម្រាប់ស្ថាប័ន កន្លែងធ្វើការ និងផ្ទះវីឡា ឱ្យមានស្ថេរភាពខ្ពស់។</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🛡️</div>
+                    <h3>ការធានា និងថែទាំ</h3>
+                    <p>រាល់ផលិតផលពី TechNexus នឹងទទួលបានការធានាពិតប្រាកដពីរោងចក្រ និងសេវាកម្មពិនិត្យសុខភាពម៉ាស៊ីនដោយឥតគិតថ្លៃ។</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">🚚</div>
+                    <h3>ដឹកជញ្ជូនរហ័ស</h3>
+                    <p>សេវាដឹកជញ្ជូនរហ័សទូទាំង ២៥ ខេត្តក្រុង ជាមួយនឹងការវេចខ្ចប់យ៉ាងប្រុងប្រយ័ត្នបំផុត ធានាសុវត្ថិភាពទំនិញ ១០០%។</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="blog" style="background: var(--bg-card);">
+        <div class="container">
+            <div class="section-header">
+                <h2>ប្លុកបច្ចេកវិទ្យាចុងក្រោយ</h2>
+                <p>ចែករំលែកចំណេះដឹង និងបច្ចេកវិទ្យាថ្មីៗដែលកំពុងកើតមាន</p>
+            </div>
+
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <div class="blog-thumb" style="display:flex; align-items:center; justify-content:center; font-size:4rem;">📉</div>
+                    <div class="blog-body">
+                        <span class="blog-date">April 05, 2026</span>
+                        <h3>របៀបជ្រើសរើស Power Supply ឱ្យត្រូវនឹង Graphics Card ជំនាន់ថ្មី</h3>
+                        <p>ការប្រើប្រាស់ PSU ដែលមាន Watts ទាបអាចបង្កគ្រោះថ្នាក់ដល់កុំព្យូទ័ររបស់អ្នក។ ស្វែងយល់ពីរបៀបគណនា...</p>
+                        <a href="#" style="color: var(--primary); font-weight: 700;">អានបន្ថែម →</a>
+                    </div>
+                </div>
+
+                <div class="blog-card">
+                    <div class="blog-thumb" style="display:flex; align-items:center; justify-content:center; font-size:4rem;">🧪</div>
+                    <div class="blog-body">
+                        <span class="blog-date">March 28, 2026</span>
+                        <h3>DDR5 vs DDR4 តើវាពិតជាខុសគ្នាខ្លាំងក្នុងការលេងហ្គេមមែនទេ?</h3>
+                        <p>ការប្រៀបធៀបសមត្ថភាពពិតប្រាកដរវាង RAM ទាំងពីរជំនាន់ លើហ្គេមធំៗនៅឆ្នាំ ២០២៦ នេះ...</p>
+                        <a href="#" style="color: var(--primary); font-weight: 700;">អានបន្ថែម →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding" id="faq">
+        <div class="container">
+            <div class="section-header" style="text-align: center; border: none; padding: 0;">
+                <h2>សំណួរដែលគេសួរញឹកញាប់</h2>
+                <p>អ្វីដែលអ្នកចង់ដឹង យើងមានចម្លើយជូនជានិច្ច</p>
+            </div>
+
+            <div class="faq-wrapper">
+                <div class="faq-item">
+                    <div class="faq-question">តើ TechNexus មានសេវាកម្មបង់រំលស់ដែរឬទេ? <span>+</span></div>
+                    <div class="faq-answer">បាទ/ចាស! យើងមានដៃគូសហការជាមួយធនាគារជាច្រើន ដើម្បីផ្ដល់សេវាកម្មបង់រំលស់ជាមួយអត្រាការប្រាក់ទាប និងឯកសារងាយស្រួល។</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">ចុះបើផលិតផលមានបញ្ហាក្រោយពេលទិញ? <span>+</span></div>
+                    <div class="faq-answer">លោកអ្នកអាចយកមកប្តូរថ្មីក្នុងរយៈពេល ៧ថ្ងៃ ប្រសិនបើមានបញ្ហាបច្ចេកទេសពីរោងចក្រ និងមានការធានាជួសជុលឥតគិតថ្លៃតាមកាលកំណត់។</div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">តើការដឹកជញ្ជូនប្រើរយៈពេលប៉ុន្មានថ្ងៃ? <span>+</span></div>
+                    <div class="faq-answer">សម្រាប់ភ្នំពេញ យើងដឹកជូនក្នុងថ្ងៃតែមួយ។ សម្រាប់បណ្តាខេត្ត ប្រើរយៈពេល ១ ទៅ ២ ថ្ងៃ តាមរយៈក្រុមហ៊ុនដឹកជញ្ជូនដែលអ្នកពេញចិត្ត។</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <h2>TECHNEXUS</h2>
+                    <p>មជ្ឈមណ្ឌលបច្ចេកវិទ្យាឈានមុខគេនៅកម្ពុជា ដែលផ្តល់ជូននូវគ្រឿងបន្លាស់កុំព្យូទ័រលំដាប់ Premium និងសេវាកម្មដំឡើង PC Gaming ដ៏មានទំនុកចិត្តបំផុត។</p>
+                    <div style="display: flex; gap: 20px;">
+                        <span style="font-size: 1.5rem; cursor: pointer;">🔵</span>
+                        <span style="font-size: 1.5rem; cursor: pointer;">🔴</span>
+                        <span style="font-size: 1.5rem; cursor: pointer;">🟢</span>
+                    </div>
+                </div>
+                
+                <div class="footer-nav">
+                    <h4>តំណភ្ជាប់រហ័ស</h4>
+                    <ul>
+                        <li><a href="#home">ទំព័រដើម</a></li>
+                        <li><a href="#products">ផលិតផល</a></li>
+                        <li><a href="#services">សេវាកម្ម</a></li>
+                        <li><a href="#blog">ប្លុក</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-nav">
+                    <h4>ផ្នែកគាំទ្រ</h4>
+                    <ul>
+                        <li><a href="#">គោលការណ៍ធានា</a></li>
+                        <li><a href="#">ការដឹកជញ្ជូន</a></li>
+                        <li><a href="#">របៀបទូទាត់</a></li>
+                        <li><a href="#">ជ្រើសរើសបុគ្គលិក</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-nav">
+                    <h4>ទំនាក់ទំនង</h4>
+                    <ul>
+                        <li>📍 វិថីព្រះមុនីវង្ស, ភ្នំពេញ</li>
+                        <li>📞 012 999 888 / 098 777 666</li>
+                        <li>📧 info@technexus.com</li>
+                        <li>⏰ 8:00 AM - 8:00 PM</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                &copy; ២០២៦ TECHNEXUS CAMBODIA | រក្សាសិទ្ធិគ្រប់យ៉ាងដោយអ្នកឯកទេសបច្ចេកវិទ្យា
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // --- THEME SWITCHER LOGIC ---
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Check for saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', savedTheme);
+        themeToggle.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeToggle.innerHTML = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+
+        // --- FAQ ACCORDION LOGIC ---
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const faqItem = button.parentElement;
+                
+                // Toggle active class
+                faqItem.classList.toggle('active');
+                
+                // Close others
+                document.querySelectorAll('.faq-item').forEach(item => {
+                    if (item !== faqItem) {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        });
+
+        // --- SMOOTH STICKY NAV ---
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('nav');
+            if (window.scrollY > 50) {
+                header.style.padding = '5px 0';
+                header.style.boxShadow = 'var(--shadow-md)';
+            } else {
+                header.style.padding = '0';
+                header.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

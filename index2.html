@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Store - My Website</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' }
+  </script>
+  <style>
+    .mobile-menu { transition: transform 0.3s ease, opacity 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fadeIn 0.4s ease forwards; opacity: 0; }
+    .product-card:hover .product-img { transform: scale(1.05); }
+    .hidden { display: none; }
+  </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 min-h-screen flex flex-col transition-colors duration-300">
+
+  <div id="sidebarOverlay" class="hidden fixed inset-0 bg-black/30 z-30" onclick="toggleSidebar()"></div>
+
+  <aside id="sidebar"
+    class="fixed top-0 left-0 h-full w-56 bg-white dark:bg-gray-800 border-r border-gray-100 dark:border-gray-700 z-40 pt-16 transition-transform duration-300 -translate-x-full shadow-lg">
+    <nav class="flex flex-col mt-4">
+      <a href="javascript:void(0)" onclick="showView('shop'); toggleSidebar()" class="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">🏠 Home</a>
+      <a href="javascript:void(0)" onclick="showView('shop'); toggleSidebar()" class="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">🛍 Shop</a>
+      <a href="javascript:void(0)" onclick="showView('about'); toggleSidebar()" class="flex items-center gap-3 px-5 py-3 text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">👥 About Us</a>
+      <div class="px-5 pt-4 border-t border-gray-100 dark:border-gray-700 mt-2">
+        <a href="javascript:void(0)" onclick="showView('login'); toggleSidebar()" class="block text-center bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition-colors duration-300 text-sm">Sign In</a>
+      </div>
+    </nav>
+  </aside>
+
+  <header class="fixed top-0 left-0 right-0 z-20 bg-white dark:bg-gray-900 shadow-sm">
+    <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <button id="sidebarToggleBtn" onclick="toggleSidebar()"
+          class="flex flex-col items-center justify-center gap-[5px] w-9 h-9 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors focus:outline-none">
+          <span id="bar1" class="block w-4 h-[1.5px] bg-gray-700 dark:bg-gray-200 rounded transition-all duration-300"></span>
+          <span id="bar2" class="block w-4 h-[1.5px] bg-gray-700 dark:bg-gray-200 rounded transition-all duration-300"></span>
+          <span id="bar3" class="block w-4 h-[1.5px] bg-gray-700 dark:bg-gray-200 rounded transition-all duration-300"></span>
+        </button>
+        <a href="javascript:void(0)" onclick="showView('shop')" class="text-2xl font-bold text-green-500">Logo</a>
+      </div>
+      <div class="hidden md:flex space-x-6">
+        <button onclick="showView('shop')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-green-500 transition-colors duration-300 font-bold">Home</button>
+        <button onclick="showView('shop')" class="nav-link text-green-500 font-bold">Shop</button>
+        <button onclick="showView('about')" class="nav-link text-gray-700 dark:text-gray-300 hover:text-green-500 transition-colors duration-300 font-bold">About Us</button>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button id="darkModeToggle" class="text-gray-700 dark:text-gray-200 hover:text-green-500 focus:outline-none transition-colors duration-300">
+          <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+          </svg>
+          <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+        </button>
+        <button class="relative text-gray-700 dark:text-gray-200 hover:text-green-500 transition-colors duration-300">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <span id="cartCount" class="absolute -top-2 -right-2 bg-green-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold">0</span>
+        </button>
+        <button onclick="showView('login')" class="hidden md:inline-block bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-600 transition-colors duration-300">Sign In</button>
+      </div>
+    </nav>
+  </header>
+
+  <main class="flex-1 pt-20 container mx-auto px-4 py-8">
+    
+    <div id="shopView" class="flex flex-col md:flex-row gap-8">
+      <aside class="hidden md:block w-56 flex-shrink-0">
+        <h2 class="text-2xl font-extrabold text-gray-800 dark:text-white mb-6 uppercase">Store</h2>
+        <ul class="space-y-1">
+          <li><button onclick="selectCategory(this, 'All')" class="category-btn w-full text-left px-5 py-3 rounded-full bg-green-500 text-white font-medium text-sm transition-all duration-200">All Products</button></li>
+          <li><button onclick="selectCategory(this, 'Keyboard')" class="category-btn w-full text-left px-5 py-3 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 font-medium text-sm transition-all duration-200">Keyboard</button></li>
+          <li><button onclick="selectCategory(this, 'Mice')" class="category-btn w-full text-left px-5 py-3 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 font-medium text-sm transition-all duration-200">Mice</button></li>
+          <li><button onclick="selectCategory(this, 'Microphone')" class="category-btn w-full text-left px-5 py-3 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 font-medium text-sm transition-all duration-200">Microphone</button></li>
+          <li><button onclick="selectCategory(this, 'Headset')" class="category-btn w-full text-left px-5 py-3 rounded-full text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 font-medium text-sm transition-all duration-200">Headset</button></li>
+        </ul>
+      </aside>
+
+      <div class="flex-1 min-w-0">
+        <div class="relative mb-8">
+          <input id="searchInput" type="text" placeholder="Search products..." class="w-full pl-12 pr-4 py-3 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-green-500 transition-all text-sm" oninput="renderProducts()" />
+          <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M17 11A6 6 0 115 11a6 6 0 0112 0z"/></svg>
+        </div>
+        <div id="productGrid" class="grid grid-cols-2 lg:grid-cols-3 gap-5"></div>
+        <div id="emptyState" class="hidden text-center py-20"><p class="text-gray-400 text-lg">No products found.</p></div>
+      </div>
+    </div>
+
+    <div id="aboutView" class="hidden animate-fade-in py-10">
+      <div class="max-w-4xl mx-auto text-center">
+        <h2 class="text-4xl font-extrabold text-gray-800 dark:text-white mb-6">Our Mission</h2>
+        <p class="text-lg text-gray-600 dark:text-gray-400 mb-12">We provide premium peripherals for the modern professional and dedicated gamer. Every product is selected for quality, aesthetics, and performance.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="p-8 bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <div class="text-4xl mb-4">🚀</div>
+            <h3 class="font-bold dark:text-white mb-2">Fast Delivery</h3>
+            <p class="text-sm text-gray-500">Global shipping within 3-5 business days.</p>
+          </div>
+          <div class="p-8 bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <div class="text-4xl mb-4">🛡️</div>
+            <h3 class="font-bold dark:text-white mb-2">2 Year Warranty</h3>
+            <p class="text-sm text-gray-500">We stand by the quality of our gear.</p>
+          </div>
+          <div class="p-8 bg-white dark:bg-gray-800 rounded-3xl shadow-sm border border-gray-100 dark:border-gray-700">
+            <div class="text-4xl mb-4">💬</div>
+            <h3 class="font-bold dark:text-white mb-2">Expert Support</h3>
+            <p class="text-sm text-gray-500">Real people, available 24/7 for you.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="loginView" class="hidden animate-fade-in py-10 flex justify-center">
+      <div class="w-full max-w-md bg-white dark:bg-gray-800 rounded-3xl p-8 shadow-xl border border-gray-100 dark:border-gray-700">
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-white text-center mb-2">Welcome Back</h2>
+        <p class="text-gray-500 text-center text-sm mb-8">Sign in to manage your orders</p>
+        <form class="space-y-4" onsubmit="event.preventDefault()">
+          <input type="email" placeholder="Email Address" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-green-500 dark:text-white">
+          <input type="password" placeholder="Password" class="w-full px-4 py-3 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-xl outline-none focus:ring-2 focus:ring-green-500 dark:text-white">
+          <button class="w-full bg-green-500 text-white font-bold py-3 rounded-xl hover:bg-green-600 transition-all">Sign In</button>
+        </form>
+        <p class="mt-6 text-center text-sm text-gray-500">Don't have an account? <a href="#" class="text-green-500 font-bold">Sign Up</a></p>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const products = [
+      { id:1, name:'Razer Ornata V3 - Kitty Edition', price:119.99, category:'Keyboard', img:'https://assets3.razerzone.com/Mww6WQAgviLRfjJ07EG_VKaqOQ0=/300x300/https%3A%2F%2Fmedias-p1.phoenix.razer.com%2Fsys-master-phoenix-images-container%2Fh8d%2Fhcb%2F9796329373726%2Fornata-v3-tenkeyless-hello-kitty-500x500.png' },
+      { id:2, name:'Logitech Signature Slim Solar', price:99.99, category:'Keyboard', img:'https://resource.logitech.com/w_416,h_312,ar_4:3,c_pad,q_auto,f_auto,dpr_2.0/d_transparent.gif/content/dam/logitech/en/products/keyboards/solar-k980-keyboard-for-mac/off-white/gallery-images/signature-slim-solar+for-mac-wireless-keyboard-k980-off-white-typing-view-6.png' },
+      { id:9, name:'Razer Viper V4 Pro - White', price:154.99, category:'Mice', img:'https://assets3.razerzone.com/V_ROn1uwZTtCNoOLjBRGWrYqS48=/300x300/https%3A%2F%2Fmedias-p1.phoenix.razer.com%2Fsys-master-phoenix-images-container%2Fh57%2Fh60%2F10039373201438%2Fviper-v4-pro-white-2-500x500.png' },
+      { id:17, name:'Blue Yeti USB Microphone', price:99.99, category:'Microphone', img:'https://m.media-amazon.com/images/I/61RMFIkGTjL._AC_SL1500_.jpg' },
+      { id:23, name:'Razer BlackShark V2', price:24.99, category:'Headset', img:'https://cdn11.bigcommerce.com/s-q8jsr/images/stencil/1280x1280/products/3402/21690/Razer_BlackShark_V2_-_Wired_Gaming_Headset_USB_Sound_Card_-_Special_Edition__44742.1674806728.jpg?c=2' }
+    ];
+
+    let currentCategory = 'All';
+    let cartCount = 0;
+
+    // --- VIEW CONTROLLER ---
+    function showView(viewId) {
+      const views = ['shopView', 'aboutView', 'loginView'];
+      views.forEach(v => document.getElementById(v).classList.add('hidden'));
+      document.getElementById(viewId + 'View').classList.remove('hidden');
+      window.scrollTo(0,0);
+    }
+
+    // --- PRODUCT LOGIC ---
+    function renderProducts() {
+      const search = document.getElementById('searchInput').value.toLowerCase();
+      const grid = document.getElementById('productGrid');
+      const empty = document.getElementById('emptyState');
+      const filtered = products.filter(p => {
+        const matchCat = currentCategory === 'All' || p.category === currentCategory;
+        const matchSearch = p.name.toLowerCase().includes(search);
+        return matchCat && matchSearch;
+      });
+      
+      if (filtered.length === 0) {
+        grid.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+      }
+      empty.classList.add('hidden');
+      grid.innerHTML = filtered.map(p => `
+        <div class="product-card bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 overflow-hidden group transition-all duration-300 hover:shadow-md">
+          <div class="overflow-hidden bg-gray-50 dark:bg-gray-700 aspect-square flex items-center justify-center p-4">
+            <img src="${p.img}" alt="${p.name}" class="product-img w-full h-full object-contain transition-transform duration-300" />
+          </div>
+          <div class="p-4 text-center">
+            <h3 class="text-sm font-medium text-gray-800 dark:text-white truncate mb-1">${p.name}</h3>
+            <p class="text-green-500 font-bold text-sm mb-3">$${p.price.toFixed(2)}</p>
+            <button onclick="addToCart()" class="w-full bg-green-500 hover:bg-green-600 text-white text-xs font-medium py-2 rounded-full transition-colors">Add to Cart</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function selectCategory(btn, cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.category-btn').forEach(b => {
+        b.classList.remove('bg-green-500', 'text-white');
+        b.classList.add('text-gray-700', 'dark:text-gray-300');
+      });
+      btn.classList.add('bg-green-500', 'text-white');
+      renderProducts();
+    }
+
+    function addToCart() {
+      cartCount++;
+      document.getElementById('cartCount').textContent = cartCount;
+    }
+
+    // --- UI HELPERS ---
+    function toggleDarkMode() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      document.getElementById('moonIcon').classList.toggle('hidden', isDark);
+      document.getElementById('sunIcon').classList.toggle('hidden', !isDark);
+    }
+    document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+
+    let sidebarOpen = false;
+    function toggleSidebar() {
+      sidebarOpen = !sidebarOpen;
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      sidebar.classList.toggle('-translate-x-full', !sidebarOpen);
+      overlay.classList.toggle('hidden', !sidebarOpen);
+      
+      const b1 = document.getElementById('bar1'), b2 = document.getElementById('bar2'), b3 = document.getElementById('bar3');
+      b1.style.transform = sidebarOpen ? 'translateY(6.5px) rotate(45deg)' : '';
+      b2.style.opacity = sidebarOpen ? '0' : '1';
+      b3.style.transform = sidebarOpen ? 'translateY(-6.5px) rotate(-45deg)' : '';
+    }
+
+    // Initialize
+    renderProducts();
+  </script>
+</body>
+</html>
